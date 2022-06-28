@@ -9,3 +9,9 @@ Moreover, make sure there exists the dataset that you are going to evaluate your
 git clone https://github.com/mertalifirat/SegmentationEvaluator 
 
 pip install -r requirements.txt
+
+It is time to edit the main.py where described as TODO in main.py.
+
+After that you are done, just execute the following line:
+
+python main.py
