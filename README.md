@@ -6,5 +6,5 @@ Make sure that you have the torch.jit.script model loaded with state_dict.
 Moreover, make sure there exists the dataset that you are going to evaluate your model with it.
 
 
-git clone https://github.com/mertalifirat/SegmentationEvaluator
+git clone https://github.com/mertalifirat/SegmentationEvaluator \n
 pip install -r requirements.txt
