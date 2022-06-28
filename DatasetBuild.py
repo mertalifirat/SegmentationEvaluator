@@ -6,23 +6,18 @@ import mmcv
  
 class CustomImageDataset(Dataset):
     ### Custom dataset class which is inherited from the torch.utils.data.Dataset
-    def __init__(self, img_dir, ann_dir,img_suffix,ann_suffix, CLASSES ,mean=np.float32([123.675, 116.28 , 103.53]),std=np.float32([58.395 ,57.12,  57.375])):
+    def __init__(self, img_dir, ann_dir,testing,img_suffix,ann_suffix, CLASSES ,mean=np.float32([123.675, 116.28 , 103.53]),std=np.float32([58.395 ,57.12,  57.375])):
         ### Custom class constructor
         self.img_dir = img_dir
         self.ann_dir = ann_dir
+        self.testing = testing
         self.img_suffix = img_suffix
         self.ann_suffix = ann_suffix
         self.mean=mean
         self.std=std
         self.to_rgb=True
-        """self.transform = transforms.Compose([
-                            transforms.Resize((512,687)),
-                            
-                            
-                            transforms.Normalize(mean=np.float32([123.675, 116.28 , 103.53]),std=np.float32([58.395 ,57.12,  57.375]))
-                            ])"""
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
-        self.img_infos=self.loadAnnotations(self.img_dir,self.ann_dir,self.img_suffix,self.ann_suffix)
+        self.img_infos=self.loadImgInfos(self.img_dir,self.ann_dir,self.img_suffix,self.ann_suffix)
         self.file_client_args={'backend': 'disk'}
         self.file_client=None
         self.color_type='color'
@@ -43,7 +38,7 @@ class CustomImageDataset(Dataset):
         return self.transformFunc(img_path),annotation 
     
     def transformFunc(self,img_path):
-        ### Transforming function 
+        ### Transforming function, it takes a path of the image and loads it and returns the transformed version of it
         imgg=self.imgfrombytes(img_path) ### reads image and returns bytes
         self.originalShape=imgg.shape[:2] ### stroing the original shape of the per image
         imgg = mmcv.imrescale( imgg,(2048, 512) , return_scale=False) ### Rescale function from mmcv library
@@ -53,8 +48,8 @@ class CustomImageDataset(Dataset):
         imgg=self.imgToTensor(imgg) 
         return imgg   
 
-    def loadAnnotations(self, img_dir, ann_dir, img_suffix, ann_suffix):
-        ### loading infos of the annotations
+    def loadImgInfos(self, img_dir, ann_dir, img_suffix, ann_suffix):
+        ### loading infos of the images and annotations which will be used in __getitem__
         img_infos=[]
         temp=[]
         for _,_,i in os.walk(img_dir):
@@ -84,12 +79,12 @@ class CustomImageDataset(Dataset):
             img=img.numpy()
             return torch.from_numpy(img.transpose(2, 0, 1))
         elif isinstance(img, np.ndarray):
-            return torch.from_numpy(img.transpose(2, 0, 1))## transpose da sıkıntı var 
+            return torch.from_numpy(img.transpose(2, 0, 1))
         else :
             return img  
 
     def loadSegMap(self,ann_path):
-        ### loading annotation from given path per image
+        ### loading annotation from given path per image returns the segmentation map
         self.file_client = mmcv.FileClient(**self.file_client_args)
         filename=ann_path
         img_bytes = self.file_client.get(filename)
