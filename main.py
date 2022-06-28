@@ -4,7 +4,7 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 ###############
 #### TODO #####
-model=torch.load('') ### .pt file of your model state_dict
+model=torch.jit.load('') ### .pt file of your model state_dict
 CLASSES=[] ### specify the classes  ==>>  [str]
 ImagesPath='' ### give the path of your images directory that will be used on testing ==>> str
 AnnotationsPath='' ### give path of your annotations directory that will be used on testing ==>> str
