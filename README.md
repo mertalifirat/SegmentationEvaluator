@@ -7,3 +7,4 @@ Moreover, make sure there exists the dataset that you are going to evaluate your
 
 
 git clone https://github.com/mertalifirat/SegmentationEvaluator
+pip install -r requirements.txt
