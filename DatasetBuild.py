@@ -6,11 +6,10 @@ import mmcv
  
 class CustomImageDataset(Dataset):
     ### Custom dataset class which is inherited from the torch.utils.data.Dataset
-    def __init__(self, img_dir, ann_dir,testing,img_suffix,ann_suffix, CLASSES ,mean=np.float32([123.675, 116.28 , 103.53]),std=np.float32([58.395 ,57.12,  57.375])):
+    def __init__(self, img_dir, ann_dir,img_suffix,ann_suffix, CLASSES ,mean=np.float32([123.675, 116.28 , 103.53]),std=np.float32([58.395 ,57.12,  57.375])):
         ### Custom class constructor
         self.img_dir = img_dir
         self.ann_dir = ann_dir
-        self.testing = testing
         self.img_suffix = img_suffix
         self.ann_suffix = ann_suffix
         self.mean=mean
