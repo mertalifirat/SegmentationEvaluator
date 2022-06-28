@@ -1,0 +1,7 @@
+######################################################
+### Specified versions are used for the initial commit
+######################################################
+torch == 1.12.0
+torchvision == 0.13.0
+mmcv == 1.5.1
+numpy
