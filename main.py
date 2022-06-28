@@ -1,4 +1,4 @@
-import helperF
+import helperFuncs
 from DatasetBuild import CustomImageDataset
 import torch 
 from torch.utils.data.dataloader import DataLoader
