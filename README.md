@@ -18,3 +18,5 @@ After that you are done, just execute the following line:
 python main.py
 ```
 Note that for now only precision,recall and IoU metrics can be calculated.
+
+Reference https://github.com/open-mmlab/mmsegmentation
