@@ -17,3 +17,4 @@ After that you are done, just execute the following line:
 ```code{
 python main.py
 ```
+Note that for now only precision,recall and IoU metrics can be calculated.
