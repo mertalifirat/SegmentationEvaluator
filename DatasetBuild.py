@@ -3,18 +3,17 @@ from torch.utils.data import Dataset
 import os
 import numpy as np
 import mmcv
- 
+from PIL import Image
 class CustomImageDataset(Dataset):
     ### Custom dataset class which is inherited from the torch.utils.data.Dataset
-    def __init__(self, img_dir, ann_dir,img_suffix,ann_suffix, CLASSES ,mean=np.float32([123.675, 116.28 , 103.53]),std=np.float32([58.395 ,57.12,  57.375])):
+    def __init__(self, img_dir, ann_dir,testing,img_suffix,ann_suffix, CLASSES,transform):
         ### Custom class constructor
         self.img_dir = img_dir
         self.ann_dir = ann_dir
+        self.testing = testing
         self.img_suffix = img_suffix
         self.ann_suffix = ann_suffix
-        self.mean=mean
-        self.std=std
-        self.to_rgb=True
+        self.transform=transform
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.img_infos=self.loadImgInfos(self.img_dir,self.ann_dir,self.img_suffix,self.ann_suffix)
         self.file_client_args={'backend': 'disk'}
@@ -33,8 +32,12 @@ class CustomImageDataset(Dataset):
         img_path = self.img_infos[idx]['filename']
         img_path=self.img_dir+'/'+img_path
         annotation = self.img_infos[idx]['ann']['seg_map']
-        annotation=self.ann_dir+'/'+annotation
-        return self.transformFunc(img_path),annotation 
+        annotation=self.ann_dir+'/'+annotation 
+        if self.transform is not None:
+            image = Image.open(img_path)
+            return self.transform(image),annotation
+        else:
+            return self.transformFunc(img_path),annotation 
     
     def transformFunc(self,img_path):
         ### Transforming function, it takes a path of the image and loads it and returns the transformed version of it
@@ -43,7 +46,7 @@ class CustomImageDataset(Dataset):
         imgg = mmcv.imrescale( imgg,(2048, 512) , return_scale=False) ### Rescale function from mmcv library
         imgg = imgg.astype(np.float32) 
         imgg=torch.Tensor(imgg)
-        imgg = mmcv.imnormalize(imgg.numpy(),self.mean, self.std, self.to_rgb) ### normalization with given parameters 
+        imgg = mmcv.imnormalize(imgg.numpy(),np.float32([123.675, 116.28 , 103.53]), np.float32([58.395 ,57.12,  57.375]), True) ### normalization with given parameters 
         imgg=self.imgToTensor(imgg) 
         return imgg   
 
