@@ -33,10 +33,14 @@ class CustomImageDataset(Dataset):
         annotation = self.img_infos[idx]['ann']['seg_map']
         annotation=self.ann_dir+'/'+annotation 
         if self.transform is not None:
-            image = Image.open(img_path)
-            return self.transform(image),annotation
+            imgg = Image.open(img_path)
+            imgg = self.transform(imgg)
+            self.originalShape=imgg.shape[1:] ### stroing the original shape of the per image
+            return imgg,annotation
+
         else:
             return self.transformFunc(img_path),annotation 
+
     
     def transformFunc(self,img_path):
         ### Transforming function, it takes a path of the image and loads it and returns the transformed version of it
