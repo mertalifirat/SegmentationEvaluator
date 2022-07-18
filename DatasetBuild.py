@@ -6,11 +6,10 @@ import mmcv
 from PIL import Image
 class CustomImageDataset(Dataset):
     ### Custom dataset class which is inherited from the torch.utils.data.Dataset
-    def __init__(self, img_dir, ann_dir,testing,img_suffix,ann_suffix, CLASSES,transform):
+    def __init__(self, img_dir, ann_dir,img_suffix,ann_suffix, CLASSES,transform):
         ### Custom class constructor
         self.img_dir = img_dir
         self.ann_dir = ann_dir
-        self.testing = testing
         self.img_suffix = img_suffix
         self.ann_suffix = ann_suffix
         self.transform=transform
