@@ -16,3 +16,6 @@ transform=None ### (optional) custom transforms ==> transforms.Compose[] , if no
 dataset=CustomImageDataset(ImagesPath,AnnotationsPath,imgSuffix,annSuffix,CLASSES,transform)
 dataload=DataLoader(dataset)
 precision,recall,IoU=helperFuncs.evaluate(model,dataset,dataload)
+### EDITABLE ###
+### evaluate function prints and returns the metric values, it is up to user to use it as void or not ###
+################
