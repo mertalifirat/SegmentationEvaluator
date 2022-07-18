@@ -2,6 +2,7 @@ import helperFuncs
 from DatasetBuild import CustomImageDataset
 import torch 
 from torch.utils.data.dataloader import DataLoader
+from torchvision import transforms
 ###############
 #### TODO #####
 model=torch.jit.load('') ### .pt file of your model state_dict
