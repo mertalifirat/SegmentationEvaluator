@@ -10,8 +10,9 @@ ImagesPath='' ### give the path of your images directory that will be used on te
 AnnotationsPath='' ### give path of your annotations directory that will be used on testing ==>> str
 imgSuffix='' ### image file suffix (e.g. .png) ==>> str
 annSuffix='' ### annotation file suffix (e.g .png) ==>> str
+transform=None ### (optional) custom transforms ==> transforms.Compose[] , if not given default fcuntion will be executed for transforming
 ###############
 ###############
-dataset=CustomImageDataset(ImagesPath,AnnotationsPath,imgSuffix,annSuffix,CLASSES)
+dataset=CustomImageDataset(ImagesPath,AnnotationsPath,imgSuffix,annSuffix,CLASSES,transform)
 dataload=DataLoader(dataset)
 precision,recall,IoU=helperFuncs.evaluate(model,dataset,dataload)
