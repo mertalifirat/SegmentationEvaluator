@@ -11,7 +11,7 @@ def evaluate(model, dataset, dataloader):
     results = []
     dataset = dataloader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))
-    for data,ann_path in dataloader:
+    for data,ann_path,indexx in dataloader:
         with torch.no_grad():
             data=data.to(device)
             result=model(data) 
@@ -21,6 +21,8 @@ def evaluate(model, dataset, dataloader):
             result=TR(result)
             ###  taking armax for detecting which pixel belongs to which class
             result=result[0].argmax(dim=0)
+            ### Storing the result as image
+            loadimage(result,indexx)
             ### Taking the annotated segmentation map
             seg_map=dataset.loadSegMap(ann_path[0])
             ### Evaluating the prediction and annotation
@@ -68,3 +70,14 @@ def metrics(results,dataset):
     print('Precision \t Recall \t IoU ')
     print('{:.2f}        \t {:.2f}     \t {:.2f}'.format(100*precision.mean().item(),100*recall.mean().item(),100*IoU.mean().item()))
     return precision,recall,IoU
+def loadimage(output,indexx):
+    
+    image_data=output.cpu().numpy()
+    image_data=image_data.astype(np.uint8)
+    print(np.count_nonzero(image_data))
+    image_data=128*image_data
+    im = Image.fromarray(image_data)
+    
+    indexx="predictionmasks/" + indexx ## editable you may need to create a directory "./SegmentationEvaluator/xxx", replace "xxx" with predictionmasks
+    im.save(indexx)
+
