@@ -36,10 +36,10 @@ class CustomImageDataset(Dataset):
             imgg = Image.open(img_path)
             imgg = self.transform(imgg)
             self.originalShape=imgg.shape[1:] ### stroing the original shape of the per image
-            return imgg,annotation
+            return imgg,annotationfull,annotation
 
         else:
-            return self.transformFunc(img_path),annotation 
+            return self.transformFunc(img_path),annotationfull,annotation 
 
     
     def transformFunc(self,img_path):
