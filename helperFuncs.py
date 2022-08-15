@@ -2,7 +2,7 @@ import mmcv
 import torch
 import numpy as np
 import torchvision.transforms as T
-
+from PIL import Image
 def evaluate(model, dataset, dataloader):
     ### main evaluate function that will evaluate per image and will get result in overall
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
