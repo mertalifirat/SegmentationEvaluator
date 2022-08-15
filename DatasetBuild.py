@@ -31,7 +31,7 @@ class CustomImageDataset(Dataset):
         img_path = self.img_infos[idx]['filename']
         img_path=self.img_dir+'/'+img_path
         annotation = self.img_infos[idx]['ann']['seg_map']
-        annotation=self.ann_dir+'/'+annotation 
+        annotationfull=self.ann_dir+'/'+annotation 
         if self.transform is not None:
             imgg = Image.open(img_path)
             imgg = self.transform(imgg)
